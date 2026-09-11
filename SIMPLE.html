@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abin Text Animation</title>
+    <style>
+        body {
+            background-color: #000; /* Umukara nko mu ifoto yawe */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        /* Umwanya umutima uberamo */
+        #ui {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        /* Iyi niyo CSS yawe neza neza, twongereyeho animation gusa */
+        #ui .love_word { 
+            position: absolute;
+            color: #ea80b0; 
+            font-size: 1.1rem; /* Twagabanyije size ngo bikore umutima mwiza */
+            text-shadow: 0 0 10px #fff; 
+            letter-spacing: 2px; 
+            white-space: nowrap;
+            opacity: 0;
+
+            /* Twakoresheje 'transform-origin' ngo ijambo ryizungurutseho neza */
+            transform-origin: center;
+            
+            /* Animation izamura ijambo ryawe ikanarihengamika nko muri CSS yawe */
+            animation: moveUp 4s linear infinite;
+        }
+
+        /* Uko ijambo ryitwara rishya linjira */
+        @keyframes moveUp {
+            0% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) scale(0.5);
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                /* Hano ikoresha ya CSS yawe: ikazamuka (-100%) ikagenda n'iherezo kuri -30deg */
+                transform: translate(var(--x), calc(var(--y) - 60px)) rotate(-30deg) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hano niho amagambo aremera umutima -->
+    <div id="ui"></div>
+
+    <script>
+        const ui = document.getElementById('ui');
+        const totalWords = 120; // Umubare w'amagambo akora umutima
+
+        // Amakaritasi (Mathematical Heart Equation) adufasha kubona point z'umutima
+        for (let i = 0; i < totalWords; i++) {
+            const angle = (i / totalWords) * 2 * Math.PI;
+            
+            // Formula y'umutima (Heart Shape math formula)
+            const r = 13;
+            const x = 16 * Math.pow(Math.sin(angle), 3);
+            const y = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
+
+            // Guhindura mibare ngo ijyane n'umwanya kuri screen
+            const screenX = 200 + x * r;
+            const screenY = 200 + y * r;
+
+            // Kurema ijambo rishya rya "i love you"
+            const span = document.createElement('span');
+            span.className = 'love_word';
+            span.innerText = 'A b i n ✨';
+            
+            // Guha buri jambo umwanya waryo ku nshuro y'umutima
+            span.style.setProperty('--x', `${screenX - 40}px`);
+            span.style.setProperty('--y', `${screenY}px`);
+
+            // Gushyiramo igatanya (delay) ngo amagambo ntabereke icyarimwe, ahubwo aserereke arandamana
+            span.style.animationDelay = `${(i / totalWords) * 3}s`;
+
+            ui.appendChild(span);
+        }
+    </script>
+</body>
+</html>
